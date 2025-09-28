@@ -12,5 +12,6 @@
 if ( ! empty( $block->inner_blocks ) ) {
 	$random_inner_block = $block->inner_blocks[ array_rand( iterator_to_array( $block->inner_blocks ) ) ];
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $random_inner_block->render();
 }
