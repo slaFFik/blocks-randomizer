@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "blocks-randomizer/holder",
+	"version": "1.0.0",
+	"title": "Blocks Randomizer",
+	"category": "widgets",
+	"icon": "randomize",
+	"description": "Display randomly any of the top-level blocks within the \"Blocks Randomizer\" main block.",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "blocks-randomizer",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}
