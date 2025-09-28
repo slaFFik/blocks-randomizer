@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Blocks Randomizer
- * Plugin URI:        https://ovirium.com
+ * Plugin URI:        https://github.com/slaffik/blocks-randomizer
  * Description:       Display randomly any of the top-level blocks within &quot;Blocks Randomizer&quot; main block.
  * Version:           1.0.0
  * Requires at least: 6.7
