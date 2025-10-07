@@ -32,5 +32,8 @@ This section describes how to install the plugin and get it working.
 
 == Changelog ==
 
+= 1.1.0 =
+* Added: New option - Number of child blocks to display.
+
 = 1.0.0 =
 * Added: New parent container to store all your randomly selected blocks: Blocks Randomizer

@@ -1,32 +1,10 @@
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
- */
 import { __ } from '@wordpress/i18n';
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
 import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls
 } from '@wordpress/block-editor';
-
-/**
- * WordPress components and element hooks
- */
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import { PanelBody, __experimentalNumberControl as NumberControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**
@@ -43,9 +21,14 @@ import './editor.scss';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
+ * @param {Object} props - Block props.
+ * @param {Object} props.attributes - Block attributes.
+ * @param {Function} props.setAttributes - Function to update block attributes.
+ *
  * @return {Element} Element to render.
  */
-export default function Edit() {
+export default function Edit( { attributes, setAttributes } ) {
+	const { numberOfItems } = attributes;
 	const [ allowedBlocks ] = useState( null ); // Allow all blocks
 
 	const blockProps = useBlockProps( {
@@ -70,12 +53,23 @@ export default function Edit() {
 		<>
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Container Settings', 'paragraph-container-block-wp' ) }
+					title={ __( 'Display', 'blocks-randomizer' ) }
 					initialOpen={ true }
 				>
-					<p>
-						{ __( 'This container behaves like a paragraph but can hold any blocks inside.', 'paragraph-container-block-wp' ) }
-					</p>
+					<NumberControl
+						label={ __( 'Number of child blocks to display', 'blocks-randomizer' ) }
+						help={ __( 'How many random blocks to show on the front-end. If you specify more than available, all blocks will be displayed.', 'blocks-randomizer' ) }
+						value={ numberOfItems }
+						onChange={ ( value ) => {
+							const numValue = parseInt( value, 10 );
+							if ( numValue > 0 || value === '' ) {
+								setAttributes( { numberOfItems: numValue || 1 } );
+							}
+						} }
+						required={ true }
+						min={ 1 }
+						step={ 1 }
+					/>
 				</PanelBody>
 			</InspectorControls>
 

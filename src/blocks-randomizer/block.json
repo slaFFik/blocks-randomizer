@@ -7,6 +7,12 @@
 	"category": "widgets",
 	"icon": "randomize",
 	"description": "Display randomly any of the top-level blocks within the \"Blocks Randomizer\" main block.",
+	"attributes": {
+		"numberOfItems": {
+			"type": "number",
+			"default": 1
+		}
+	},
 	"supports": {
 		"html": false
 	},
