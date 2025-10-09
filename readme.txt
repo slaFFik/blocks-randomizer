@@ -1,6 +1,6 @@
 === Blocks Randomizer ===
 Contributors: slaFFik
-Tags: content block, random, randomize
+Tags: content-block, random, randomize, rotation, spotlight
 Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 6.8
