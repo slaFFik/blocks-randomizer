@@ -84,6 +84,10 @@ This section describes how to install the plugin and get it working.
 
 == Changelog ==
 
+= UNRELEASED =
+* Changed: You can now set the number of items as 0, effectively hiding the whole block on the front-end.
+* Changed: Do not allow putting the Randomizer block inside the Randomizer block. You don't want to go deeper.
+
 = 1.1.0 =
 * Added: New option - Number of child blocks to display.
 

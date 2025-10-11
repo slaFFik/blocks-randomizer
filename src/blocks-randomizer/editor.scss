@@ -1,11 +1,12 @@
-/**
- * The following styles get applied inside the editor only.
- *
- * Replace them with your own styles or remove the file completely.
- */
-
 .wp-block-blocks-randomizer-holder {
-	/* Provide visual feedback in the editor that this is a container */
+	&.is-selected,
+	&.has-child-selected {
+		outline: 2px solid #007cba;
+		outline-offset: 2px;
+	}
+}
+
+.wp-block-blocks-randomizer-holder-inner {
 	position: relative;
 	background-color: #fff;
 	border-radius: 2px;
@@ -17,26 +18,7 @@
 	> *:last-of-type {
 		margin-bottom: 0;
 	}
-
-	/* Show a subtle indication when empty */
-	&:empty {
-		//background: rgba(0, 0, 0, 0.05);
-		//border-radius: 2px;
-		//position: relative;
-		//
-		//&::before {
-		//	content: attr(data-placeholder);
-		//	color: #757575;
-		//	position: absolute;
-		//	top: 0;
-		//	left: 0;
-		//	right: 0;
-		//	pointer-events: none;
-		//}
-	}
-
-	&.is-selected {
-		outline: 2px solid #007cba;
-		outline-offset: 2px;
+	> *:first-of-type {
+		margin-top: 0;
 	}
 }

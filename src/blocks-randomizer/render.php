@@ -18,6 +18,10 @@ if ( ! empty( $block->inner_blocks ) ) {
 	// Get the number of items to display, default to 1.
 	$number_of_items = isset( $attributes['numberOfItems'] ) ? absint( $attributes['numberOfItems'] ) : 1;
 
+	if ( $number_of_items === 0 ) {
+		return;
+	}
+
 	// Get all inner blocks as an array.
 	$inner_blocks = iterator_to_array( $block->inner_blocks );
 	$total_blocks = count( $inner_blocks );
