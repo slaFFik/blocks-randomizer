@@ -4,7 +4,7 @@ Tags: content-block, random, randomize, rotation, spotlight
 Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPL-2.0-or-later
 
 Display randomly any of the top-level blocks within &quot;Blocks Randomizer&quot; main block.
@@ -15,7 +15,7 @@ Blocks Randomizer adds dynamic variety to your website by randomly displaying bl
 
 Perfect for creating fresh, engaging experiences for repeat visitors without manually updating content.
 
-= Key Features =
+### Key Features
 
 * **Easy to Use**: Works seamlessly with the WordPress Block Editor (Gutenberg)
 * **Flexible Content**: Add any type of block as a child - paragraphs, images, headings, galleries, custom blocks, and more
@@ -23,7 +23,7 @@ Perfect for creating fresh, engaging experiences for repeat visitors without man
 * **No Coding Required**: Simple drag-and-drop interface for managing randomized content
 * **Performance Optimized**: Lightweight and efficient randomization
 
-= Use Cases =
+### Use Cases
 
 **Rotating Testimonials**
 Create a collection of testimonial blocks and display a different customer review each time visitors load your page. Great for homepage hero sections or service pages.
@@ -49,7 +49,7 @@ Add multiple greeting blocks for different occasions and let visitors see varied
 **Team Member Spotlights**
 Showcase different team members randomly on your about page, giving everyone fair representation.
 
-= How It Works =
+### How It Works
 
 1. Add the "Blocks Randomizer" block to your page or post
 2. Insert any blocks you want as direct children (top-level blocks will be picked during the randomization logic)
@@ -57,7 +57,7 @@ Showcase different team members randomly on your about page, giving everyone fai
 4. Publish your page - visitors will see random content from your collection
 5. Update anytime by adding, removing, or editing child blocks
 
-= Perfect For =
+### Perfect For
 
 * Marketing and landing pages
 * Membership and community sites
@@ -72,10 +72,30 @@ Whether you're looking to increase engagement, test different messaging, or simp
 
 This section describes how to install the plugin and get it working.
 
-1. Upload `blocks-randomizer` to the `/wp-content/plugins/` directory.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Go to the Block Editor and add your new "Blocks Randomizer" block, which is just a container.
-1. Any to the top level any children blocks that you want to be randomized on display on the front-end.
+**Install through your backend**:
+
+1. Install the plugin via Plugins -> New plugin. Search for "blocks randomizer".
+1. Click the "Install Now" button, and then - "Activate".
+
+**Install manually**:
+
+1. Download and unzip the plugin.
+1. Upload the `blocks-randomizer` directory to the `/wp-content/plugins/` directory.
+1. Activate the plugin through the "Plugins" menu in WordPress.
+
+**Next**:
+
+Now you can use the plugin inside the Block Editor.
+
+== Frequently Asked Questions ==
+
+# Does the block output anything on the front-end?
+
+Only the randomly selected child (or inner) block inside the Block Randomizer container will be displayed on the frnot-end. There will be no extra <code>div</code> wrapper, no extra classes or ids.
+
+# Why have you created the plugin?
+
+I wanted to diversify content on my login page and display it randomly for users.
 
 == Screenshots ==
 
@@ -84,8 +104,8 @@ This section describes how to install the plugin and get it working.
 
 == Changelog ==
 
-= UNRELEASED =
-* Changed: You can now set the number of items as 0, effectively hiding the whole block on the front-end.
+= 1.2.0 =
+* Changed: You can now set the number of items inside the randomizer block to 0, effectively hiding the whole block on the front-end (and everything inside it).
 * Changed: Do not allow putting the Randomizer block inside the Randomizer block. You don't want to go deeper.
 
 = 1.1.0 =
