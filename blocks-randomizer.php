@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       Blocks Randomizer
+ * Plugin Name:       Content Randomizer - Rotate Any Block
  * Plugin URI:        https://github.com/slaffik/blocks-randomizer
- * Description:       Display randomly any of the top-level blocks within &quot;Blocks Randomizer&quot; main block.
- * Version:           1.1.0
+ * Description:       Display randomly any of the top-level blocks within the &quot;Blocks Randomizer&quot; main block.
+ * Version:           1.2.0
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Slava Abakumov

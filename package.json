@@ -1,6 +1,6 @@
 {
 	"name": "blocks-randomizer",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "Display randomly any of the top-level blocks within the main \"Blocks Randomizer\" block.",
 	"author": "Slava Abakumov",
 	"license": "GPL-2.0-or-later",
