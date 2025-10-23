@@ -4,7 +4,7 @@ Tags: randomizer, rotation, gutenberg, dynamic-content, testimonials
 Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPL-2.0-or-later
 
 Rotate and display random content blocks on every page load. Perfect for testimonials, CTAs, and dynamic content. Works with any block type.
@@ -338,6 +338,9 @@ The Blocks Randomizer is a native WordPress block designed for the Block Editor 
 1. Front-end display of randomly selected blocks with custom styling.
 
 == Changelog ==
+
+= 1.2.1 =
+* Fixed: In the Block Editor the white background of the Block Randomizer inner container is no longer set - so users of dark themes can actually see the text inside the randomizer while editing the block.
 
 = 1.2.0 =
 * Changed: You can now set the number of items inside the randomizer block to 0, effectively hiding the whole block on the front-end (and everything inside it).
