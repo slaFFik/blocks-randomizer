@@ -2,9 +2,13 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
-	InspectorControls
+	InspectorControls,
 } from '@wordpress/block-editor';
-import { PanelBody, __experimentalNumberControl as NumberControl } from '@wordpress/components';
+import {
+	PanelBody,
+	__experimentalNumberControl as NumberControl,
+	CheckboxControl,
+} from '@wordpress/components';
 import { useMemo } from '@wordpress/element';
 import { getBlockTypes } from '@wordpress/blocks';
 
@@ -16,24 +20,26 @@ import './editor.scss';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @param {Object} props - Block props.
- * @param {Object} props.attributes - Block attributes.
+ * @param {Object}   props               - Block props.
+ * @param {Object}   props.attributes    - Block attributes.
  * @param {Function} props.setAttributes - Function to update block attributes.
  *
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { numberOfItems } = attributes;
+	const { numberOfItems, shuffle } = attributes;
 
 	const blockProps = useBlockProps( {
 		// className: 'wp-block-blocks-randomizer-holder-parent'
-	});
+	} );
 
 	// Allow all blocks except self-referencing to be added as inner blocks.
 	const allowedBlocks = useMemo( () => {
 		return getBlockTypes()
 			.map( ( block ) => block.name )
-			.filter( ( blockName ) => blockName !== 'blocks-randomizer/holder' );
+			.filter(
+				( blockName ) => blockName !== 'blocks-randomizer/holder'
+			);
 	}, [] );
 
 	// @see https://github.com/WordPress/gutenberg/tree/trunk/packages/block-editor/src/components/inner-blocks
@@ -43,13 +49,16 @@ export default function Edit( { attributes, setAttributes } ) {
 			className: 'wp-block-blocks-randomizer-holder-inner',
 		},
 		{
-			allowedBlocks: allowedBlocks,
+			allowedBlocks,
 			orientation: 'vertical',
 			defaultBlock: {
 				name: 'core/paragraph',
 				attributes: {
-					placeholder: __( 'Start typing or add any block inside this container...', 'blocks-randomizer' )
-				}
+					placeholder: __(
+						'Start typing or add any block inside this container…',
+						'blocks-randomizer'
+					),
+				},
 			},
 			templateLock: false,
 		}
@@ -66,18 +75,39 @@ export default function Edit( { attributes, setAttributes } ) {
 				>
 					<NumberControl
 						__next40pxDefaultSize
-						label={ __( 'Number of child blocks to display', 'blocks-randomizer' ) }
-						help={ __( 'How many random blocks to show on the front-end. If you specify more than available, all blocks will be displayed.', 'blocks-randomizer' ) }
+						label={ __(
+							'Number of child blocks to display',
+							'blocks-randomizer'
+						) }
+						help={ __(
+							'How many random blocks to show on the front-end. If you specify more than available, all blocks will be displayed.',
+							'blocks-randomizer'
+						) }
 						value={ numberOfItems }
 						onChange={ ( value ) => {
 							console.log( 'value:', value );
-							const numValue = Math.max( 0, parseInt( value, 10 ) );
-							console.log( 'numValue:', numValue);
+							const numValue = Math.max(
+								0,
+								parseInt( value, 10 )
+							);
+							console.log( 'numValue:', numValue );
 							setAttributes( { numberOfItems: numValue } );
 						} }
 						required={ true }
 						min={ 0 }
 						step={ 1 }
+					/>
+					<CheckboxControl
+						label={ __( 'Shuffle', 'blocks-randomizer' ) }
+						help={ __(
+							'Shuffle the selected blocks in random order.',
+							'blocks-randomizer'
+						) }
+						checked={ shuffle }
+						disabled={ numberOfItems < 2 }
+						onChange={ ( value ) => {
+							setAttributes( { shuffle: value } );
+						} }
 					/>
 				</PanelBody>
 			</InspectorControls>

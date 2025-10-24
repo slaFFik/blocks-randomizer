@@ -11,6 +11,10 @@
 		"numberOfItems": {
 			"type": "number",
 			"default": 1
+		},
+		"shuffle": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

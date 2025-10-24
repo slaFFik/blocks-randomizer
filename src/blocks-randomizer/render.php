@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! empty( $block->inner_blocks ) ) {
 	// Get the number of items to display, default to 1.
 	$number_of_items = isset( $attributes['numberOfItems'] ) ? absint( $attributes['numberOfItems'] ) : 1;
+	$shuffle         = isset( $attributes['shuffle'] ) ? (bool) $attributes['shuffle'] : false;
 
 	if ( $number_of_items === 0 ) {
 		return;
@@ -42,6 +43,11 @@ if ( ! empty( $block->inner_blocks ) ) {
 		foreach ( $random_keys as $key ) {
 			$random_blocks[] = $inner_blocks[ $key ];
 		}
+	}
+
+	// Shuffle blocks if shuffle is enabled and number of items is 2 or higher.
+	if ( $shuffle && $number_of_items >= 2 ) {
+		shuffle( $random_blocks );
 	}
 
 	// Render each selected block.
