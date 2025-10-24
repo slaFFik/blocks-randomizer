@@ -44,6 +44,13 @@ if ( ! empty( $block->inner_blocks ) ) {
 		}
 	}
 
+	// Shuffle the selected blocks if shuffle is enabled and more than 1 block is displayed.
+	$shuffle = isset( $attributes['shuffle'] ) && (bool) $attributes['shuffle'];
+
+	if ( $shuffle && $number_of_items > 1 && count( $random_blocks ) > 1 ) {
+		shuffle( $random_blocks );
+	}
+
 	// Render each selected block.
 	foreach ( $random_blocks as $random_block ) {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

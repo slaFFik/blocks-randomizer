@@ -4,7 +4,7 @@ import {
 	useInnerBlocksProps,
 	InspectorControls
 } from '@wordpress/block-editor';
-import { PanelBody, __experimentalNumberControl as NumberControl } from '@wordpress/components';
+import { PanelBody, __experimentalNumberControl as NumberControl, ToggleControl } from '@wordpress/components';
 import { useMemo } from '@wordpress/element';
 import { getBlockTypes } from '@wordpress/blocks';
 
@@ -23,7 +23,7 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { numberOfItems } = attributes;
+	const { numberOfItems, shuffle } = attributes;
 
 	const blockProps = useBlockProps( {
 		// className: 'wp-block-blocks-randomizer-holder-parent'
@@ -70,14 +70,20 @@ export default function Edit( { attributes, setAttributes } ) {
 						help={ __( 'How many random blocks to show on the front-end. If you specify more than available, all blocks will be displayed.', 'blocks-randomizer' ) }
 						value={ numberOfItems }
 						onChange={ ( value ) => {
-							console.log( 'value:', value );
 							const numValue = Math.max( 0, parseInt( value, 10 ) );
-							console.log( 'numValue:', numValue);
 							setAttributes( { numberOfItems: numValue } );
 						} }
 						required={ true }
 						min={ 0 }
 						step={ 1 }
+					/>
+
+					<ToggleControl
+						label={__( 'Shuffle Random Blocks', 'blocks-randomizer' )}
+						help={__( 'Randomize the order of randomly selected child blocks.', 'blocks-randomizer' )}
+						checked={shuffle}
+						disabled={numberOfItems < 2}
+						onChange={( value ) => setAttributes( { shuffle: value } )}
 					/>
 				</PanelBody>
 			</InspectorControls>
