@@ -339,6 +339,9 @@ The Blocks Randomizer is a native WordPress block designed for the Block Editor 
 
 == Changelog ==
 
+= 1.3.0 =
+* Added: New "Shuffle" option to randomize the order of randomly selected blocks. Enabled and works only if there is more than 1 block to display.
+
 = 1.2.1 =
 * Fixed: In the Block Editor the white background of the Block Randomizer inner container is no longer set - so users of dark themes can actually see the text inside the randomizer while editing the block.
 
