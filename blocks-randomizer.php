@@ -59,3 +59,9 @@ function blocks_randomizer_block_init() {
 }
 
 add_action( 'init', 'blocks_randomizer_block_init' );
+
+/**
+ * Include the server-side rendering for List block randomization.
+ * This adds the render_block filter to randomize list items when the randomize attribute is enabled.
+ */
+require_once __DIR__ . '/build/list-randomizer/render.php';
