@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { addFilter } from '@wordpress/hooks';
-import { ToggleControl } from '@wordpress/components';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
@@ -57,7 +57,10 @@ const withRandomizeControl = createHigherOrderComponent( ( BlockEdit ) => {
 			<>
 				<BlockEdit { ...props } />
 				<InspectorControls>
-					<div style={ { padding: '16px' } }>
+					<PanelBody
+						title={ __( 'Randomization', 'blocks-randomizer' ) }
+						initialOpen={ false }
+					>
 						<ToggleControl
 							label={ __( 'Randomize', 'blocks-randomizer' ) }
 							help={ __(
@@ -69,7 +72,7 @@ const withRandomizeControl = createHigherOrderComponent( ( BlockEdit ) => {
 								setAttributes( { randomize: value } )
 							}
 						/>
-					</div>
+					</PanelBody>
 				</InspectorControls>
 			</>
 		);

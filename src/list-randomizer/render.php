@@ -33,6 +33,8 @@ function blocks_randomizer_list_render_callback( $block_content, $block, $instan
 	}
 
 	// Parse the HTML content to find list items.
+	// Note: The block content comes from the WordPress database and has already been
+	// sanitized during block saving, so it's safe to parse here.
 	$dom = new DOMDocument();
 	// Suppress warnings for malformed HTML.
 	libxml_use_internal_errors( true );
