@@ -1,4 +1,4 @@
-![Content Randomizer - Rotate Any Block](.wporg/banner-1544x500.png)
+![Content Randomizer - Rotate Any Block](https://ps.w.org/blocks-randomizer/assets/banner-1544x500.png)
 
 A WordPress Gutenberg block plugin that displays randomly selected child blocks on every page load. Perfect for testimonials, CTAs, and dynamic content rotation.
 
@@ -30,8 +30,8 @@ A WordPress Gutenberg block plugin that displays randomly selected child blocks 
 ### Setup
 
 ```bash
-# Install dependencies
-npm install
+# Install dependencies as per the package-lock.json file
+npm ci
 
 # Start development build (watch mode)
 npm start
