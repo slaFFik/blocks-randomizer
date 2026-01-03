@@ -12,20 +12,14 @@ A WordPress Gutenberg block plugin that displays randomly selected child blocks 
 
 ## Use Cases
 
-- Rotating testimonials and customer reviews
+- Rotating testimonials and customer reviews, or any other blocks
 - A/B testing CTAs and promotional messages
-- Random product showcases (WooCommerce compatible)
+- Random product showcases (WooCommerce blocks compatible)
 - Banner and advertisement rotation
 - Daily tips, quotes, and educational content
 - Team member spotlights
 
 ## Development
-
-### Requirements
-
-- WordPress 6.7+
-- PHP 7.4+
-- Node.js & npm
 
 ### Setup
 
@@ -56,18 +50,6 @@ npm run lint:js
 npm run lint:css
 ```
 
-## Architecture
-
-- **Block Registration**: Uses WordPress 6.7+ blocks manifest (`blocks-manifest.php`) for improved performance
-- **Editor Component**: Container block using `useInnerBlocksProps` with no child restrictions
-- **Rendering**: Server-side randomization in `render.php` using `$block->inner_blocks`
-- **Build System**: `@wordpress/scripts` with custom flags (`--webpack-copy-php`, `--blocks-manifest`)
-
-Key files:
-- `blocks-randomizer.php` - Main plugin file with block registration
-- `src/blocks-randomizer/` - Block source files
-- `build/` - Compiled assets
-
 ## Contributing
 
 Contributions are welcome! Here's how to get started:
@@ -81,20 +63,21 @@ Contributions are welcome! Here's how to get started:
 
 ### Pull Requests
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature-name`)
-3. Make your changes following WordPress coding standards
-4. Run linting and formatting (`npm run format && npm run lint:js && npm run lint:css`)
-5. Test thoroughly in a WordPress environment
-6. Commit with clear, descriptive messages
-7. Push to your fork and submit a pull request
+1. Create a GH issue in this repository describing your proposed changes
+2. Fork the repository
+3. Create a feature branch (`git checkout -b 42-your-feature-name` where `42` is the issue number)
+4. Make your changes following WordPress coding standards
+5. Run linting and formatting (`npm run format && npm run lint:js && npm run lint:css`)
+6. Test thoroughly in a WordPress environment
+7. Commit with clear, descriptive messages
+8. Push to your fork and submit a pull request
 
 ### Development Guidelines
 
 - Follow [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/)
-- Maintain backward compatibility with WordPress 6.7+
+- Maintain backward compatibility with the oldest supported WordPress version (see `Requires at least:` in the `readme.txt` file)
 - Add comments for complex logic
-- Update readme.txt changelog for user-facing changes
+- Update `readme.txt` changelog for user-facing changes
 - Test with popular caching plugins and block themes
 
 ### Areas for Contribution
@@ -105,13 +88,10 @@ Contributions are welcome! Here's how to get started:
 - Documentation enhancements
 - Internationalization (i18n) improvements
 - Bug fixes and security patches
-
-## License
-
-GPL-2.0-or-later
+- New features and enhancements
 
 ## Links
 
+- [Author's blog](https://ovirium.com)
 - [WordPress.org Plugin Page](https://wordpress.org/plugins/blocks-randomizer/)
 - [Support Forum](https://wordpress.org/support/plugin/blocks-randomizer/)
-- [Author](https://github.com/slaFFik)
