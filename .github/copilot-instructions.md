@@ -27,19 +27,15 @@ npm run build           # Production build (~15s)
 | `npm run build`       | Production build                     | Required before plugin-zip      |
 | `npm run plugin-zip`  | Create distributable ZIP             | Run build first                 |
 | `npm run format`      | Format code (WordPress standards)    | Fixes many lint issues          |
-| `npm run lint:js`     | Lint JavaScript (ESLint)             | Shows errors, some pre-existing |
-| `npm run lint:css`    | Lint SCSS (Stylelint)                | Shows errors, some pre-existing |
+| `npm run lint:js`     | Lint JavaScript (ESLint)             | Must pass with no errors        |
+| `npm run lint:css`    | Lint SCSS (Stylelint)                | Must pass with no errors        |
 
 ## Important Build Notes
 
 1. **Always use `npm ci`** instead of `npm install` for reproducible builds.
 2. **Node.js 20** is required (see `.nvmrc`).
 3. **Build before zipping**: The `plugin-zip` command requires a successful `build` first.
-4. **Linter warnings are expected**: The repository has pre-existing linting errors in `edit.js`, `index.js`, `save.js`, and SCSS files. These are known issues related to:
-   - `import/no-unresolved` for `@wordpress/*` packages (false positives)
-   - `@wordpress/no-unsafe-wp-apis` for experimental NumberControl
-   - Ellipsis character warnings
-   - JSDoc formatting
+4. **Linting must pass**: Both `npm run lint:js` and `npm run lint:css` must complete with no errors. Fix any linting issues in your changes.
 5. **The build directory is gitignored** and generated fresh on each build.
 
 ## Project Layout
@@ -89,8 +85,7 @@ Before submitting changes:
 
 1. **Build succeeds**: `npm run build` completes without errors
 2. **Format code**: `npm run format` (run before linting)
-3. **Check linting**: `npm run lint:js && npm run lint:css`
-   - Some pre-existing errors will appear; only fix errors in files you modify
+3. **Check linting**: `npm run lint:js && npm run lint:css` must pass with no errors
 4. **Test in WordPress**: Plugin requires WordPress 6.7+ environment
 
 ## No Test Suite
