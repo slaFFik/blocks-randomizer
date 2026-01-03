@@ -1,0 +1,12 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "blocks-randomizer/list-randomizer",
+	"version": "1.3.0",
+	"title": "List Randomizer Extension",
+	"category": "widgets",
+	"description": "Extends core/list block with randomization capability.",
+	"textdomain": "blocks-randomizer",
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}
