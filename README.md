@@ -56,7 +56,7 @@ Contributions are welcome! Here's how to get started:
 
 ### Reporting Issues
 
-- Use the [GitHub Issues](../../issues) tracker
+- Use the [GitHub Issues](https://github.com/slaFFik/blocks-randomizer/issues) tracker
 - Search existing issues before creating new ones
 - Include WordPress version, PHP version, and reproduction steps
 - Provide relevant error messages or screenshots
@@ -65,12 +65,11 @@ Contributions are welcome! Here's how to get started:
 
 1. Create a GH issue in this repository describing your proposed changes
 2. Fork the repository
-3. Create a feature branch (`git checkout -b 42-your-feature-name` where `42` is the issue number)
-4. Make your changes following WordPress coding standards
-5. Run linting and formatting (`npm run format && npm run lint:js && npm run lint:css`)
-6. Test thoroughly in a WordPress environment
-7. Commit with clear, descriptive messages
-8. Push to your fork and submit a pull request
+3. Make your changes following WordPress coding standards
+4. Run linting and formatting (`npm run format && npm run lint:js && npm run lint:css`)
+5. Test thoroughly in a WordPress environment
+6. Commit with clear, descriptive messages
+7. Push to your fork and submit a pull request
 
 ### Development Guidelines
 
