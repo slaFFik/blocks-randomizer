@@ -28,34 +28,41 @@ import Save from './save';
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType( metadata.name, {
-	keywords: [ __( 'content', 'blocks-randomizer' ), __( 'random', 'blocks-randomizer' ), __( 'randomizer', 'blocks-randomizer' ) ],
+	keywords: [
+		__( 'content', 'blocks-randomizer' ),
+		__( 'random', 'blocks-randomizer' ),
+		__( 'randomizer', 'blocks-randomizer' ),
+	],
 	example: {
 		innerBlocks: [
 			{
 				name: 'core/heading',
 				attributes: {
-					"level": 1,
-					content: __( 'Randomly display custom block inside', 'blocks-randomizer' ),
-				}
+					level: 1,
+					content: __(
+						'Randomly display custom block inside',
+						'blocks-randomizer'
+					),
+				},
 			},
 			{
 				name: 'core/spacer',
 				attributes: {
-					height: "25px",
-				}
-			},
-			{
-				name: 'core/heading',
-				attributes: {
-					"level": 2,
-					content: __( 'it can be images ...', 'blocks-randomizer' ),
+					height: '25px',
 				},
 			},
 			{
 				name: 'core/heading',
 				attributes: {
-					"level": 2,
-					content: __( '... or any text blocks', 'blocks-randomizer' ),
+					level: 2,
+					content: __( 'it can be images …', 'blocks-randomizer' ),
+				},
+			},
+			{
+				name: 'core/heading',
+				attributes: {
+					level: 2,
+					content: __( '… or any text blocks', 'blocks-randomizer' ),
 				},
 			},
 		],

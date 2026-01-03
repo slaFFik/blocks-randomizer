@@ -1,14 +1,11 @@
 /**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
+ * These styles get applied both on the front of your site and in the editor.
  */
 
 .wp-block-blocks-randomizer {
 	margin: 1em 0;
 
-	/* Ensure the container looks like a paragraph when it contains simple content */
+	/* Container should look like a paragraph */
 	.blocks-randomizer-container {
 		line-height: inherit;
 		font-size: inherit;
@@ -26,7 +23,7 @@
 
 		/* Handle empty state */
 		&:empty::after {
-			content: '';
+			content: "";
 			display: block;
 			min-height: 1.2em;
 		}

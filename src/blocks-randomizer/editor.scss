@@ -1,4 +1,5 @@
 .wp-block-blocks-randomizer-holder {
+
 	&.is-selected,
 	&.has-child-selected {
 		outline: 2px solid #007cba;
@@ -17,6 +18,7 @@
 	> *:last-of-type {
 		margin-bottom: 0;
 	}
+
 	> *:first-of-type {
 		margin-top: 0;
 	}
