@@ -3,7 +3,7 @@ Contributors: slaFFik
 Tags: randomizer, rotation, gutenberg, dynamic-content, testimonials
 Requires at least: 6.7
 Requires PHP: 7.4
-Tested up to: 6.8
+Tested up to: 6.9
 Stable tag: 1.3.0
 License: GPL-2.0-or-later
 
