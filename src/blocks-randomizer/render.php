@@ -26,9 +26,13 @@ if ( ! empty( $block->inner_blocks ) ) {
 	$inner_blocks = iterator_to_array( $block->inner_blocks );
 	$total_blocks = count( $inner_blocks );
 
+	// Check if session-based repeat prevention is enabled.
+	$prevent_repeats = isset( $attributes['preventRepeatsUsingSession'] ) && (bool) $attributes['preventRepeatsUsingSession'];
+
 	// If requesting more blocks than available, display all of them.
 	if ( $number_of_items >= $total_blocks ) {
 		$random_blocks = $inner_blocks;
+		$random_keys   = array_keys( $inner_blocks );
 	} else {
 		// Pick N random blocks.
 		$random_keys = array_rand( $inner_blocks, $number_of_items );
@@ -49,11 +53,46 @@ if ( ! empty( $block->inner_blocks ) ) {
 
 	if ( $shuffle && $number_of_items > 1 && count( $random_blocks ) > 1 ) {
 		shuffle( $random_blocks );
+		// Update random_keys to reflect the shuffled order.
+		$random_keys = array_keys( $random_blocks );
+	}
+
+	// If prevent repeats is enabled, wrap output and add data attributes.
+	if ( $prevent_repeats ) {
+		// Generate a unique block instance ID based on block attributes and position.
+		$block_id = 'br-' . md5( wp_json_encode( $block->parsed_block ) );
+
+		// Create a mapping of original indices for all inner blocks.
+		$all_indices = array_keys( $inner_blocks );
+
+		printf(
+			'<div class="blocks-randomizer-wrapper" data-block-id="%s" data-prevent-repeats="true" data-all-indices="%s" data-selected-indices="%s">',
+			esc_attr( $block_id ),
+			esc_attr( wp_json_encode( $all_indices ) ),
+			esc_attr( wp_json_encode( $random_keys ) )
+		);
 	}
 
 	// Render each selected block.
-	foreach ( $random_blocks as $random_block ) {
+	foreach ( $random_blocks as $index => $random_block ) {
+		if ( $prevent_repeats ) {
+			// Wrap each block with data attribute for identification.
+			$original_key = $random_keys[ $index ];
+			printf(
+				'<div class="blocks-randomizer-child" data-child-index="%d">',
+				esc_attr( $original_key )
+			);
+		}
+
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $random_block->render();
+
+		if ( $prevent_repeats ) {
+			echo '</div>';
+		}
+	}
+
+	if ( $prevent_repeats ) {
+		echo '</div>';
 	}
 }
