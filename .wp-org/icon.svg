@@ -1,0 +1,18 @@
+<svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="3.05176e-05" width="256" height="256" fill="white"/>
+<rect x="3.50003" y="3.5" width="249" height="249" fill="#0A95FF" fill-opacity="0.09"/>
+<rect x="3.50003" y="3.5" width="249" height="249" stroke="#0A95FF"/>
+<rect x="15.5" y="15.5" width="225" height="225" fill="#0A95FF" fill-opacity="0.121" stroke="#0A95FF" stroke-linejoin="bevel" stroke-dasharray="4 4"/>
+<g clip-path="url(#clip0_12_18)">
+<path d="M197.6 93.287L162.8 119.3V101.9H128L84.5 171.5H58.4V154.1H75.8L119.3 84.5H162.8V67.1L197.6 93.287ZM58.4 84.5H84.5L94.505 103.379L84.761 119.039L75.8 101.9H58.4V84.5ZM197.6 162.887L162.8 188.9V171.5H119.3L109.295 152.621L119.039 136.961L128 154.1H162.8V136.7L197.6 162.887Z" fill="#0A95FF"/>
+</g>
+<rect x="249.5" y="249.5" width="6" height="6" fill="white" stroke="#0A95FF"/>
+<rect x="249.5" y="0.5" width="6" height="6" fill="white" stroke="#0A95FF"/>
+<rect x="0.500031" y="249.5" width="6" height="6" fill="white" stroke="#0A95FF"/>
+<rect x="0.5" y="0.5" width="6" height="6" fill="white" stroke="#0A95FF"/>
+<defs>
+<clipPath id="clip0_12_18">
+<rect width="174" height="174" fill="white" transform="translate(41 41)"/>
+</clipPath>
+</defs>
+</svg>

@@ -7,13 +7,13 @@
 	"homepage": "https://ovirium.com",
 	"main": "build/index.js",
 	"scripts": {
+		"start": "wp-scripts start --webpack-copy-php --blocks-manifest",
 		"build": "wp-scripts build --webpack-copy-php --blocks-manifest",
+		"plugin-zip": "wp-scripts plugin-zip",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
-		"packages-update": "wp-scripts packages-update",
-		"plugin-zip": "wp-scripts plugin-zip",
-		"start": "wp-scripts start --webpack-copy-php --blocks-manifest"
+		"packages-update": "wp-scripts packages-update"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^31.2.0"
