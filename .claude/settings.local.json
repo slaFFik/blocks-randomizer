@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Skill(dev-browser:dev-browser)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(gh issue view:*)",
+      "Skill(wp-abilities-api)",
+      "Skill(wp-block-development)",
+      "Skill(wp-interactivity-api)",
+      "Skill(wp-plugin-development)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint:*)"
     ]
   }
 }
