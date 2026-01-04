@@ -23,76 +23,106 @@ if ( ! empty( $block->inner_blocks ) ) {
 	}
 
 	// Get all inner blocks as an array.
-	$inner_blocks = iterator_to_array( $block->inner_blocks );
-	$total_blocks = count( $inner_blocks );
+	$inner_blocks  = iterator_to_array( $block->inner_blocks );
+	$random_blocks = [];
+
+	// This id will be different every time the block holder inner blocs are changed (attributes do not affect this).
+	$session_key = 'br_ids_' . md5( wp_json_encode( $inner_blocks ) );
+	$session_ids = [];
 
 	// Check if session-based repeat prevention is enabled.
 	$prevent_repeats = isset( $attributes['preventRepeatsUsingSession'] ) && (bool) $attributes['preventRepeatsUsingSession'];
 
-	// If requesting more blocks than available, display all of them.
-	if ( $number_of_items >= $total_blocks ) {
-		$random_blocks = $inner_blocks;
-		$random_keys   = array_keys( $inner_blocks );
-	} else {
-		// Pick N random blocks.
-		$random_keys = array_rand( $inner_blocks, $number_of_items );
-
-		// array_rand returns a single value if $number_of_items is 1, so normalize to array.
-		if ( ! is_array( $random_keys ) ) {
-			$random_keys = array( $random_keys );
-		}
-
-		$random_blocks = array();
-		foreach ( $random_keys as $key ) {
-			$random_blocks[] = $inner_blocks[ $key ];
-		}
-	}
-
-	// Shuffle the selected blocks if shuffle is enabled and more than 1 block is displayed.
-	$shuffle = isset( $attributes['shuffle'] ) && (bool) $attributes['shuffle'];
-
-	if ( $shuffle && $number_of_items > 1 && count( $random_blocks ) > 1 ) {
-		shuffle( $random_blocks );
-		// Update random_keys to reflect the shuffled order.
-		$random_keys = array_keys( $random_blocks );
-	}
-
-	// If prevent repeats is enabled, wrap output and add data attributes.
 	if ( $prevent_repeats ) {
-		// Generate a unique block instance ID based on block attributes and position.
-		$block_id = 'br-' . md5( wp_json_encode( $block->parsed_block ) );
+		$session_ids = array_filter( (array) explode( ',', stripslashes( $_COOKIE[ $session_key ] ?? '' ) ) );
+	} else {
+		// Clear the cookie if it exists.
+		if ( isset( $_COOKIE[ $session_key ] ) ) {
+			setcookie(
+				$session_key,
+				'',
+				[
+					'expires'  => time() - 3600,
+					'path'     => '/',
+					'secure'   => is_ssl(),
+					'httponly' => true,
+					'samesite' => 'Lax',
+				]
+			);
+			unset( $_COOKIE[ $session_key ] );
+		}
+	}
 
-		// Create a mapping of original indices for all inner blocks.
-		$all_indices = array_keys( $inner_blocks );
+	if ( empty( $session_ids ) ) {
+		/*
+		 * We don't have the session IDs yet - pick new random blocks.
+		 */
+		$total_blocks  = count( $inner_blocks );
 
-		printf(
-			'<div class="blocks-randomizer-wrapper" data-block-id="%s" data-prevent-repeats="true" data-all-indices="%s" data-selected-indices="%s">',
-			esc_attr( $block_id ),
-			esc_attr( wp_json_encode( $all_indices ) ),
-			esc_attr( wp_json_encode( $random_keys ) )
-		);
+		// If requesting more blocks than available, display all of them.
+		if ( $number_of_items >= $total_blocks ) {
+			$random_blocks = $inner_blocks;
+		} else {
+			// Pick N random blocks.
+			$random_keys = (array) array_rand( $inner_blocks, $number_of_items );
+
+			foreach ( $random_keys as $key ) {
+				$random_blocks[] = $inner_blocks[ $key ];
+			}
+		}
+
+		// Shuffle the selected blocks if shuffle is enabled and more than 1 block is displayed.
+		$shuffle = isset( $attributes['shuffle'] ) && (bool) $attributes['shuffle'];
+
+		if ( $shuffle && $number_of_items > 1 && count( $random_blocks ) > 1 ) {
+			shuffle( $random_blocks );
+		}
+
+		// Save to the session cookie only if the option is enabled.
+		if ( $prevent_repeats ) {
+			// Generate a unique block instance ID.
+			$ids = array_map(
+				static function ( $inner_block ) {
+					return md5( wp_json_encode( $inner_block->parsed_block ) );
+				},
+				$random_blocks
+			);
+
+			if ( ! empty( $ids ) ) {
+				setcookie(
+					$session_key,
+					implode( ',', $ids ),
+					[
+						//'expires'  => 0, // This is a session cookie.
+						'path'     => '/',
+						'secure'   => is_ssl(),
+						'httponly' => true, // Don't allow JavaScript access.
+						'samesite' => 'Lax',
+					]
+				);
+			}
+		}
+
+	} else {
+		/*
+		 * Get the random blocks out of the session IDs - preserve the original (shuffled) order.
+		 */
+		foreach ( $session_ids as $session_id ) {
+			foreach ( $inner_blocks as $inner_block ) {
+				$block_id = md5( wp_json_encode( $inner_block->parsed_block ) );
+
+				if ( $block_id === $session_id ) {
+					$random_blocks[] = $inner_block;
+					break; // Found the block, move to next session_id.
+				}
+			}
+		}
 	}
 
 	// Render each selected block.
-	foreach ( $random_blocks as $index => $random_block ) {
-		if ( $prevent_repeats ) {
-			// Wrap each block with data attribute for identification.
-			$original_key = $random_keys[ $index ];
-			printf(
-				'<div class="blocks-randomizer-child" data-child-index="%d">',
-				esc_attr( $original_key )
-			);
-		}
-
+	foreach ( $random_blocks as $random_block ) {
+		/* @var $random_block WP_Block */
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $random_block->render();
-
-		if ( $prevent_repeats ) {
-			echo '</div>';
-		}
-	}
-
-	if ( $prevent_repeats ) {
-		echo '</div>';
 	}
 }
