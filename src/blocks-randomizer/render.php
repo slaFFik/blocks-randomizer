@@ -36,7 +36,7 @@ if ( ! empty( $block->inner_blocks ) ) {
 
 	if ( $prevent_repeats ) {
 		$stored_block_ids = array_filter(
-			(array) explode( ',', stripslashes( $_COOKIE[ $session_cookie_name ] ?? '' ) ),
+			(array) explode( ',', $_COOKIE[ $session_cookie_name ] ?? '' ),
 			static function ( $hash ) {
 				return ! empty( $hash ) && is_string( $hash ) && preg_match( '/^[a-f0-9]{32}$/i', $hash );
 			}
@@ -120,7 +120,7 @@ if ( ! empty( $block->inner_blocks ) ) {
 
 				if ( $block_id === $session_block_id ) {
 					$random_blocks[] = $inner_block;
-					break; // Found the block, move to next session_id.
+					break; // Found the block, move to the next session_block_id.
 				}
 			}
 		}

@@ -119,7 +119,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							'blocks-randomizer'
 						) }
 						help={ __(
-							'Random blocks will be temporarily stored using session cookies in the user’s browser and cleared when the browser session ends.',
+							'Random blocks will stay the same until the browser is completely closed. This prevents different blocks from appearing when navigating between pages.',
 							'blocks-randomizer'
 						) }
 						checked={ preventRepeatsUsingSession }
