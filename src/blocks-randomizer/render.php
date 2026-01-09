@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#render
  */
-spatie_ray("did_action('wp_head')", did_action('wp_head'));
 
 /* @var $block WP_Block */
 if ( ! empty( $block->inner_blocks ) ) {
