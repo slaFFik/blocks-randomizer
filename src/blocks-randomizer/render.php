@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#render
  */
+spatie_ray("did_action('wp_head')", did_action('wp_head'));
 
 /* @var $block WP_Block */
 if ( ! empty( $block->inner_blocks ) ) {
@@ -26,34 +27,39 @@ if ( ! empty( $block->inner_blocks ) ) {
 	$inner_blocks  = iterator_to_array( $block->inner_blocks );
 	$random_blocks = [];
 
-	// This id will be different every time the block holder inner blocs are changed (attributes do not affect this).
-	$session_key = 'br_ids_' . md5( wp_json_encode( $inner_blocks ) );
-	$session_ids = [];
+	// This id will be different every time the block holder inner blocks are changed (attributes do not affect this).
+	$session_cookie_name = 'br_ids_' . md5( wp_json_encode( $inner_blocks ) );
+	$stored_block_ids    = [];
 
 	// Check if session-based repeat prevention is enabled.
 	$prevent_repeats = isset( $attributes['preventRepeatsUsingSession'] ) && (bool) $attributes['preventRepeatsUsingSession'];
 
 	if ( $prevent_repeats ) {
-		$session_ids = array_filter( (array) explode( ',', stripslashes( $_COOKIE[ $session_key ] ?? '' ) ) );
+		$stored_block_ids = array_filter(
+			(array) explode( ',', stripslashes( $_COOKIE[ $session_cookie_name ] ?? '' ) ),
+			static function ( $hash ) {
+				return ! empty( $hash ) && is_string( $hash ) && preg_match( '/^[a-f0-9]{32}$/i', $hash );
+			}
+		);
 	} else {
 		// Clear the cookie if it exists.
-		if ( isset( $_COOKIE[ $session_key ] ) ) {
+		if ( isset( $_COOKIE[ $session_cookie_name ] ) ) {
 			setcookie(
-				$session_key,
+				$session_cookie_name,
 				'',
 				[
 					'expires'  => time() - 3600,
-					'path'     => '/',
+					'path'     => defined( 'COOKIEPATH' ) ? COOKIEPATH : '/',
 					'secure'   => is_ssl(),
 					'httponly' => true,
 					'samesite' => 'Lax',
 				]
 			);
-			unset( $_COOKIE[ $session_key ] );
+			unset( $_COOKIE[ $session_cookie_name ] );
 		}
 	}
 
-	if ( empty( $session_ids ) ) {
+	if ( empty( $stored_block_ids ) ) {
 		/*
 		 * We don't have the session IDs yet - pick new random blocks.
 		 */
@@ -90,11 +96,11 @@ if ( ! empty( $block->inner_blocks ) ) {
 
 			if ( ! empty( $ids ) ) {
 				setcookie(
-					$session_key,
+					$session_cookie_name,
 					implode( ',', $ids ),
 					[
-						//'expires'  => 0, // This is a session cookie.
-						'path'     => '/',
+						// Omit 'expires' to use a session cookie (setcookie() defaults to expires=0).
+						'path'     => defined( 'COOKIEPATH' ) ? COOKIEPATH : '/',
 						'secure'   => is_ssl(),
 						'httponly' => true, // Don't allow JavaScript access.
 						'samesite' => 'Lax',
@@ -107,11 +113,11 @@ if ( ! empty( $block->inner_blocks ) ) {
 		/*
 		 * Get the random blocks out of the session IDs - preserve the original (shuffled) order.
 		 */
-		foreach ( $session_ids as $session_id ) {
+		foreach ( $stored_block_ids as $session_block_id ) {
 			foreach ( $inner_blocks as $inner_block ) {
 				$block_id = md5( wp_json_encode( $inner_block->parsed_block ) );
 
-				if ( $block_id === $session_id ) {
+				if ( $block_id === $session_block_id ) {
 					$random_blocks[] = $inner_block;
 					break; // Found the block, move to next session_id.
 				}
