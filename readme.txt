@@ -340,7 +340,7 @@ The Blocks Randomizer is a native WordPress block designed for the Block Editor 
 == Changelog ==
 
 = 1.4.0 =
-* Added: New session-based repeat prevention to ensure random blocks remain consistent across page loads within the same user session.
+* Added: New cookie-based repeat prevention to ensure random blocks remain consistent across page loads within the same user session.
 
 = 1.3.1 =
 * Changed: The plugin is fully compatible with WordPress 6.9.
