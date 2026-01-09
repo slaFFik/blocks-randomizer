@@ -28,7 +28,7 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { numberOfItems, shuffle } = attributes;
+	const { numberOfItems, shuffle, preventRepeatsUsingSession } = attributes;
 
 	const blockProps = useBlockProps( {
 		// className: 'wp-block-blocks-randomizer-holder-parent'
@@ -110,6 +110,23 @@ export default function Edit( { attributes, setAttributes } ) {
 						disabled={ numberOfItems < 2 }
 						onChange={ ( value ) =>
 							setAttributes( { shuffle: value } )
+						}
+					/>
+
+					<ToggleControl
+						label={ __(
+							'Prevent immediate repeats',
+							'blocks-randomizer'
+						) }
+						help={ __(
+							'Random blocks will stay the same until the browser is completely closed. This prevents different blocks from appearing when navigating between pages.',
+							'blocks-randomizer'
+						) }
+						checked={ preventRepeatsUsingSession }
+						onChange={ ( value ) =>
+							setAttributes( {
+								preventRepeatsUsingSession: value,
+							} )
 						}
 					/>
 				</PanelBody>

@@ -46,6 +46,7 @@ This plugin uses WordPress 6.7+ block type registration with `blocks-manifest.ph
    - Randomizes using `array_rand()`
    - Supports displaying N random blocks
    - Optional shuffle of selected blocks
+   - Optional storage in browser session to preserve consistent randomization during the session
    - Renders selected blocks using `$random_block->render()`
    - Note: Has `phpcs:ignore` for output escaping (intentional, as blocks handle their own escaping)
 
