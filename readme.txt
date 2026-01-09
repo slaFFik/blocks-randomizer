@@ -4,7 +4,7 @@ Tags: randomizer, rotation, gutenberg, dynamic-content, testimonials
 Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 6.9
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 License: GPL-2.0-or-later
 
 Rotate and display random content blocks on every page load. Perfect for testimonials, CTAs, and dynamic content. Works with any block type.
