@@ -94,7 +94,8 @@ if ( ! empty( $block->inner_blocks ) ) {
 				$random_blocks
 			);
 
-			if ( ! empty( $ids ) ) {
+			// After 100 blocks we are approaching cookie size limits.
+			if ( ! empty( $ids ) && count( $ids ) <= 100 ) {
 				setcookie(
 					$session_cookie_name,
 					implode( ',', $ids ),
