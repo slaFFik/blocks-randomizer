@@ -3,102 +3,78 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 Sacrifice grammar in your non-code replies for the sake of concision.
 
+## Development Site
+
+Locally, the site being developed on is `https://blocks.test`, where the login and password are both `admin`.
+
+The plugin is installed and activated in this environment, and all development and testing should be done here.
+
 ## Project Overview
 
-**Blocks Randomizer** is a WordPress Gutenberg block plugin that displays a randomly selected child block from a container on the front-end.
+**Blocks Randomizer** is a WordPress Gutenberg block plugin that displays randomly selected child blocks from a container on the front-end. Single block named `blocks-randomizer/holder`.
 
 ## Commands
 
-### Development
-- `npm start` - Start development build with watch mode (includes PHP copying and blocks manifest generation)
-- `npm run build` - Production build (includes PHP copying and blocks manifest generation)
-
-### Code Quality
-- `npm run format` - Format code using WordPress standards
-- `npm run lint:css` - Lint SCSS files
-- `npm run lint:js` - Lint JavaScript files
-
-### Distribution
-- `npm run plugin-zip` - Create deployable plugin ZIP file
-
-### Dependencies
+- `npm ci` - Install dependencies (use `ci`, not `install`, for reproducible builds)
+- `npm start` - Dev build with watch mode
+- `npm run build` - Production build (required before `plugin-zip`)
+- `npm run format` - Format code (WordPress standards)
+- `npm run lint:js` - Lint JavaScript
+- `npm run lint:css` - Lint SCSS
+- `npm run plugin-zip` - Create deployable ZIP
 - `npm run packages-update` - Update WordPress script packages
+
+No test suite exists. Manual testing in a WordPress 6.7+ environment required. Node.js 20 (see `.nvmrc`).
 
 ## Architecture
 
-### Block Structure
+### Data Flow
 
-This plugin uses WordPress 6.7+ block type registration with `blocks-manifest.php` for improved performance:
+Editor (`edit.js`) → user adds child blocks → saved as inner blocks → server-side `render.php` picks random subset → outputs rendered HTML.
 
-- **Main plugin file** (`blocks-randomizer.php`): Registers blocks using modern WordPress APIs with backward compatibility fallbacks for WP 6.7+
-- **Block source** (`src/blocks-randomizer/`): Contains all block assets that get compiled to `build/`
-- **Block name**: `blocks-randomizer/holder`
+All front-end logic is in `render.php`. The `view.js` file exists but is empty (SSR handles everything).
 
-### Key Components
+### Key Files
 
-1. **Editor (edit.js)**: Container block that accepts any child blocks using `useInnerBlocksProps`
-   - No block restrictions (allows all block types)
-   - Minimal UI with placeholder paragraph template
-   - InspectorControls panel for display settings (number of items, shuffle toggle)
+| Task | Files to modify |
+|------|----------------|
+| Front-end behavior / randomization | `src/blocks-randomizer/render.php` |
+| Editor UI / inspector controls | `src/blocks-randomizer/edit.js` |
+| Block attributes | `src/blocks-randomizer/block.json` + `edit.js` |
+| Editor-only styles | `src/blocks-randomizer/editor.scss` |
+| Front-end + editor styles | `src/blocks-randomizer/style.scss` |
+| Block registration | `src/blocks-randomizer/index.js` |
+| Plugin metadata / version | `blocks-randomizer.php` + `readme.txt` |
 
-2. **Server-side rendering (render.php)**: Core randomization logic
-   - Uses `$block->inner_blocks` to access children
-   - Randomizes using `array_rand()`
-   - Supports displaying N random blocks
-   - Optional shuffle of selected blocks
-   - Optional storage in browser session to preserve consistent randomization during the session
-   - Renders selected blocks using `$random_block->render()`
-   - Note: Has `phpcs:ignore` for output escaping (intentional, as blocks handle their own escaping)
+### Block Attributes (block.json)
 
-3. **Block metadata (block.json)**:
-   - API Version 3
-   - Category: widgets
-   - Server-side rendered via `render.php`
-   - Attributes: `numberOfItems` (number), `shuffle` (boolean)
-   - Includes editor script, styles, and view script
+- `numberOfItems` (number, default 1) — how many random child blocks to display
+- `shuffle` (boolean, default false) — randomize order of selected blocks
+- `preventRepeatsUsingSession` (boolean, default false) — store selection in browser session cookie to keep same blocks until browser closes
 
 ### Build System
 
-Uses `@wordpress/scripts` with custom flags:
-- `--webpack-copy-php` - Copies PHP files to build directory
-- `--blocks-manifest` - Generates `blocks-manifest.php` for efficient block registration
+Uses `@wordpress/scripts` with flags: `--webpack-copy-php` (copies PHP to build/) and `--blocks-manifest` (generates `blocks-manifest.php`). The `build/` directory is gitignored.
 
-### Current Implementation
+### Block Registration (blocks-randomizer.php)
 
-**Core features**:
-- Display N randomly selected child blocks on front-end render
-- Optional shuffle of selected blocks
-- Manual addition of any block types as children
-- Simple randomization on each page load
-- Server-side rendering (cache-friendly)
+Tiered fallback for WP compat:
+1. `wp_register_block_types_from_metadata_collection()` (WP 6.8+)
+2. `wp_register_block_metadata_collection()` + `register_block_type()` (WP 6.7)
 
-**What's NOT yet implemented** (from PLAN.md):
-- Weights (basic 1-5 or advanced)
-- Anti-repetition logic
-- Targeting rules (device, date, login state, etc.)
-- Advanced layouts
-- Analytics/impressions tracking
+### render.php Details
 
-## WordPress Requirements
+- `phpcs:ignore` for output escaping is intentional — inner blocks handle their own escaping
+- Session cookies use `br_ids_` prefix + md5 of inner blocks as cookie name
+- Cookie stores comma-separated md5 hashes of selected block parsed_block data
+- Caps at 100 blocks per cookie to avoid size limits
 
-- **Minimum WP version**: 6.7 (uses blocks manifest registration)
-- **Minimum PHP version**: 7.4
-- **Tested up to**: WordPress 6.9
+## Requirements
 
-## Development Notes
+- **WordPress**: 6.7+ (6.8+ for best performance)
+- **PHP**: 7.4+
+- **Node.js**: 20
 
-### When extending functionality
+## Roadmap
 
-1. **Block attributes**: Add to `block.json` and update `edit.js` to use via `attributes` prop
-2. **Inspector controls**: Extend the `InspectorControls` component in `edit.js`
-3. **Randomization logic**: Modify `render.php` (all front-end display logic is server-side)
-4. **Styles**:
-   - `editor.scss` for editor-only styles
-   - `style.scss` for front-end and editor styles
-
-### Compatibility considerations
-
-The plugin uses modern WordPress block registration APIs with fallbacks:
-- First tries `wp_register_block_types_from_metadata_collection()` (WP 6.8+)
-- Falls back to `wp_register_block_metadata_collection()` + `register_block_type()` (WP 6.7)
-- Always requires the `blocks-manifest.php` file
+See `PLAN.md` for the full feature roadmap (Free/Pro tiers). Key unimplemented features: weights, targeting rules, advanced layouts, analytics.
