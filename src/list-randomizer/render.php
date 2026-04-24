@@ -1,9 +1,10 @@
 <?php
 /**
- * Server-side rendering for List block randomization.
+ * Server-side randomization for the core/list block.
  *
- * This file adds a render callback filter to the core/list block
- * to randomize list items when the randomize attribute is enabled.
+ * Hooks `render_block_data` and shuffles the inner list-item blocks before
+ * rendering. This avoids HTML parsing entirely and works for the modern
+ * (v2) list block where list items are inner blocks.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -11,82 +12,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Filter the rendered output of the core/list block to randomize list items.
+ * Shuffle core/list inner blocks when the randomize attribute is set.
  *
- * @param string   $block_content The block content.
- * @param array    $block         The full block, including name and attributes.
- * @param WP_Block $instance      The block instance.
+ * @param array $parsed_block The parsed block array (name, attrs, innerBlocks, innerContent, innerHTML).
  *
- * @return string The modified block content.
+ * @return array The (possibly shuffled) parsed block.
  */
-function blocks_randomizer_list_render_callback( $block_content, $block, $instance ) {
-	// Only process core/list blocks.
-	if ( 'core/list' !== $block['blockName'] ) {
-		return $block_content;
+function blocks_randomizer_list_shuffle_items( $parsed_block ) {
+	if ( 'core/list' !== $parsed_block['blockName'] ) {
+		return $parsed_block;
 	}
 
-	// Check if randomize attribute is enabled.
-	$randomize = isset( $block['attrs']['randomize'] ) && $block['attrs']['randomize'];
-
-	if ( ! $randomize ) {
-		return $block_content;
+	if ( empty( $parsed_block['attrs']['randomize'] ) ) {
+		return $parsed_block;
 	}
 
-	// Parse the HTML content to find list items.
-	// Note: The block content comes from the WordPress database and has already been
-	// sanitized during block saving, so it's safe to parse here.
-	$dom = new DOMDocument();
-	// Suppress warnings for malformed HTML.
-	libxml_use_internal_errors( true );
-	
-	// Load HTML with UTF-8 encoding.
-	$dom->loadHTML( '<?xml encoding="UTF-8">' . $block_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
-	
-	// Clear any errors.
-	libxml_clear_errors();
-
-	// Find the list element (ul or ol).
-	$xpath = new DOMXPath( $dom );
-	$lists = $xpath->query( '//ul | //ol' );
-
-	if ( $lists->length === 0 ) {
-		return $block_content;
+	if ( ! empty( $parsed_block['innerBlocks'] ) && count( $parsed_block['innerBlocks'] ) > 1 ) {
+		shuffle( $parsed_block['innerBlocks'] );
 	}
 
-	// Process each list (usually just one).
-	foreach ( $lists as $list ) {
-		// Get all direct li children.
-		$list_items = array();
-		foreach ( $list->childNodes as $child ) {
-			if ( $child->nodeType === XML_ELEMENT_NODE && $child->nodeName === 'li' ) {
-				$list_items[] = $child;
-			}
-		}
-
-		// If we have list items, randomize them.
-		if ( count( $list_items ) > 1 ) {
-			// Remove all list items from the list.
-			foreach ( $list_items as $item ) {
-				$list->removeChild( $item );
-			}
-
-			// Shuffle the list items array.
-			shuffle( $list_items );
-
-			// Re-append the list items in random order.
-			foreach ( $list_items as $item ) {
-				$list->appendChild( $item );
-			}
-		}
-	}
-
-	// Save the modified HTML.
-	$modified_content = $dom->saveHTML();
-	
-	// Remove the XML encoding declaration that was added.
-	$modified_content = str_replace( '<?xml encoding="UTF-8">', '', $modified_content );
-
-	return $modified_content;
+	return $parsed_block;
 }
 
-add_filter( 'render_block', 'blocks_randomizer_list_render_callback', 10, 3 );
+add_filter( 'render_block_data', 'blocks_randomizer_list_shuffle_items' );

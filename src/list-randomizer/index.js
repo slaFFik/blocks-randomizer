@@ -1,5 +1,6 @@
 /**
- * WordPress dependencies
+ * Extends the core/list block with a "Randomize" toggle that shuffles
+ * list items on each server-side render.
  */
 import { addFilter } from '@wordpress/hooks';
 import { PanelBody, ToggleControl } from '@wordpress/components';
@@ -7,13 +8,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 
-/**
- * Add randomize attribute to core/list block.
- *
- * @param {Object} settings Block settings.
- * @param {string} name     Block name.
- * @return {Object} Modified block settings.
- */
 function addRandomizeAttribute( settings, name ) {
 	if ( name !== 'core/list' ) {
 		return settings;
@@ -37,12 +31,6 @@ addFilter(
 	addRandomizeAttribute
 );
 
-/**
- * Add toggle control to core/list block inspector.
- *
- * @param {Function} BlockEdit Original BlockEdit component.
- * @return {Function} Modified BlockEdit component.
- */
 const withRandomizeControl = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 		const { name, attributes, setAttributes } = props;
@@ -64,10 +52,10 @@ const withRandomizeControl = createHigherOrderComponent( ( BlockEdit ) => {
 						<ToggleControl
 							label={ __( 'Randomize', 'blocks-randomizer' ) }
 							help={ __(
-								'Randomize the order of list items on each page load.',
+								'Shuffle list items on each page load. Note: with full-page caching, the order changes only when the cache is regenerated.',
 								'blocks-randomizer'
 							) }
-							checked={ randomize || false }
+							checked={ randomize }
 							onChange={ ( value ) =>
 								setAttributes( { randomize: value } )
 							}
@@ -83,30 +71,4 @@ addFilter(
 	'editor.BlockEdit',
 	'blocks-randomizer/list-randomizer/with-randomize-control',
 	withRandomizeControl
-);
-
-/**
- * Add randomize attribute to block save content.
- *
- * @param {Object} extraProps Additional props for the block.
- * @param {Object} blockType  Block type definition.
- * @param {Object} attributes Block attributes.
- * @return {Object} Modified extraProps.
- */
-function saveRandomizeAttribute( extraProps, blockType, attributes ) {
-	if ( blockType.name !== 'core/list' ) {
-		return extraProps;
-	}
-
-	if ( attributes.randomize ) {
-		extraProps[ 'data-randomize' ] = 'true';
-	}
-
-	return extraProps;
-}
-
-addFilter(
-	'blocks.getSaveContent.extraProps',
-	'blocks-randomizer/list-randomizer/save-randomize-attribute',
-	saveRandomizeAttribute
 );
