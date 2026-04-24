@@ -9,6 +9,7 @@ import {
 	/* eslint-disable-next-line @wordpress/no-unsafe-wp-apis */
 	__experimentalNumberControl as NumberControl,
 	ToggleControl,
+	ExternalLink,
 } from '@wordpress/components';
 import { useMemo } from '@wordpress/element';
 import { getBlockTypes } from '@wordpress/blocks';
@@ -129,6 +130,15 @@ export default function Edit( { attributes, setAttributes } ) {
 							} )
 						}
 					/>
+
+					<ExternalLink
+						href="https://github.com/slaFFik/blocks-randomizer/issues"
+					>
+						{ __(
+							'Suggest Ideas or Report Issues',
+							'blocks-randomizer'
+						) }
+					</ExternalLink>
 				</PanelBody>
 			</InspectorControls>
 
