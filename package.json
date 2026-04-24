@@ -7,7 +7,7 @@
 	"homepage": "https://ovirium.com",
 	"main": "build/index.js",
 	"scripts": {
-		"start": "wp-scripts start --webpack-copy-php --blocks-manifest",
+		"start": "wp-block-grab start --webpack-copy-php --blocks-manifest",
 		"build": "wp-scripts build --webpack-copy-php --blocks-manifest",
 		"plugin-zip": "wp-scripts plugin-zip",
 		"format": "wp-scripts format ./src",
@@ -21,6 +21,7 @@
 		"@wordpress/components": "^31.0.0",
 		"@wordpress/element": "^6.44.0",
 		"@wordpress/i18n": "^6.11.0",
-		"@wordpress/scripts": "^32.0.0"
+		"@wordpress/scripts": "^32.0.0",
+		"wp-block-grab": "^1.0.6"
 	}
 }
