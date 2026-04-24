@@ -59,3 +59,13 @@ function blocks_randomizer_block_init() {
 }
 
 add_action( 'init', 'blocks_randomizer_block_init' );
+
+/**
+ * Include the server-side randomization logic for the core/list block.
+ * The file registers a render_block_data filter; it is not a block render callback,
+ * so it is not referenced from block.json and must be loaded manually.
+ */
+$list_randomizer_render_file = __DIR__ . '/build/list-randomizer/render.php';
+if ( file_exists( $list_randomizer_render_file ) ) {
+	require_once $list_randomizer_render_file;
+}
