@@ -74,7 +74,3 @@ Tiered fallback for WP compat:
 - **WordPress**: 6.7+ (6.8+ for best performance)
 - **PHP**: 7.4+
 - **Node.js**: 20
-
-## Roadmap
-
-See `PLAN.md` for the full feature roadmap (Free/Pro tiers). Key unimplemented features: weights, targeting rules, advanced layouts, analytics.
