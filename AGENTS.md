@@ -32,7 +32,7 @@ Editor flow: `edit.js` accepts child blocks through `InnerBlocks`; `save.js` ser
 - The stable block name is `blocks-randomizer/holder`. Changing it is a content migration, not a routine rename.
 - This is a dynamic block, but `save.js` still stores a wrapper and the inner-block markup. Save-markup changes can invalidate existing posts and need a deprecation or migration strategy plus save/reload testing.
 - The block excludes itself from its allowed inner blocks to prevent direct self-nesting.
-- There is no front-end JavaScript. `view.js` is empty and is not referenced by `block.json`; rendering is server-side.
+- There is no front-end JavaScript; rendering is server-side.
 - Randomization happens at render time. A full-page cache can preserve one rendered selection, so evaluate randomness with page caching bypassed.
 - The plugin currently has no settings page, database tables, REST routes, AJAX handlers, cron jobs, or production npm dependencies.
 
