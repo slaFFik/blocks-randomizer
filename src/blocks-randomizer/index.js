@@ -5,10 +5,12 @@ import { __ } from '@wordpress/i18n';
 import './style.scss';
 
 import Edit from './edit';
+import { ReactComponent as Icon } from './icon.svg';
 import metadata from './block.json';
 import Save from './save';
 
 registerBlockType( metadata.name, {
+	icon: <Icon />,
 	keywords: [
 		__( 'content', 'blocks-randomizer' ),
 		__( 'random', 'blocks-randomizer' ),
