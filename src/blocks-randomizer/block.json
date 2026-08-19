@@ -2,11 +2,11 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "blocks-randomizer/holder",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"title": "Blocks Randomizer",
 	"category": "widgets",
 	"icon": "randomize",
-	"description": "Display randomly any of the top-level blocks within the \"Blocks Randomizer\" main block.",
+	"description": "Show a random selection of child blocks on every page load. Great for rotating testimonials, CTAs, and banners.",
 	"attributes": {
 		"numberOfItems": {
 			"type": "number",

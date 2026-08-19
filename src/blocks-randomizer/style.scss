@@ -1,17 +1,15 @@
-/**
- * These styles get applied both on the front of your site and in the editor.
- */
+/* Shared by the editor and front end. */
 
 .wp-block-blocks-randomizer {
 	margin: 1em 0;
 
-	/* Container should look like a paragraph */
+	/* Match the surrounding paragraph typography. */
 	.blocks-randomizer-container {
 		line-height: inherit;
 		font-size: inherit;
 		color: inherit;
 
-		/* Ensure inner blocks maintain proper spacing */
+		/* Add paragraph-style spacing between child blocks. */
 		> * {
 			margin-top: 0;
 			margin-bottom: 1em;
@@ -21,7 +19,7 @@
 			margin-bottom: 0;
 		}
 
-		/* Handle empty state */
+		/* Preserve line height when the container is empty. */
 		&:empty::after {
 			content: "";
 			display: block;

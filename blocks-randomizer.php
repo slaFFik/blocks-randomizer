@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       Content Randomizer - Rotate Any Block
  * Plugin URI:        https://github.com/slaffik/blocks-randomizer
- * Description:       Display randomly any of the top-level blocks within the &quot;Blocks Randomizer&quot; main block.
- * Version:           1.4.0
+ * Description:       Show a random selection of child blocks on every page load. Great for rotating testimonials, CTAs, and banners.
+ * Version:           1.5.0
  * Requires at least: 6.8
  * Requires PHP:      7.4
  * Author:            Slava Abakumov
@@ -18,9 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers the block using a `blocks-manifest.php` file, which improves the performance of block type registration.
- * Behind the scenes, it also registers all assets so they can be enqueued
- * through the block editor in the corresponding context.
+ * Registers block metadata and assets from the generated manifest.
  *
  * @see https://make.wordpress.org/core/2025/03/13/more-efficient-block-type-registration-in-6-8/
  */

@@ -5,32 +5,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Available variables:
- * - $attributes (array)
- * - $content (string) Serialized inner blocks content.
- * - $block (WP_Block|null)
+ * Render template variables.
+ *
+ * @var array    $attributes Block attributes.
+ * @var string   $content    Serialized inner block content.
+ * @var WP_Block $block      Block instance.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#render
  */
 
-/* @var $block WP_Block */
 if ( ! empty( $block->inner_blocks ) ) {
-	// Get the number of items to display, default to 1.
 	$number_of_items = isset( $attributes['numberOfItems'] ) ? absint( $attributes['numberOfItems'] ) : 1;
 
 	if ( $number_of_items === 0 ) {
 		return;
 	}
 
-	// Get all inner blocks as an array.
 	$inner_blocks  = iterator_to_array( $block->inner_blocks );
 	$random_blocks = [];
 
-	// This id will be different every time the block holder inner blocks are changed (attributes do not affect this).
+	// Use separate repeat history for each inner block configuration.
 	$session_cookie_name = 'br_ids_' . md5( wp_json_encode( $inner_blocks ) );
 	$stored_block_ids    = [];
 
-	// Check if session-based repeat prevention is enabled.
 	$prevent_repeats = isset( $attributes['preventRepeatsUsingSession'] ) && (bool) $attributes['preventRepeatsUsingSession'];
 
 	if ( $prevent_repeats ) {
@@ -41,7 +38,7 @@ if ( ! empty( $block->inner_blocks ) ) {
 			}
 		);
 	} else {
-		// Clear the cookie if it exists.
+		// Remove repeat history when the option is disabled.
 		if ( isset( $_COOKIE[ $session_cookie_name ] ) ) {
 			setcookie(
 				$session_cookie_name,
@@ -59,16 +56,14 @@ if ( ! empty( $block->inner_blocks ) ) {
 	}
 
 	if ( empty( $stored_block_ids ) ) {
-		/*
-		 * We don't have the session IDs yet - pick new random blocks.
-		 */
+		// Select a new set when this configuration has no repeat history.
 		$total_blocks  = count( $inner_blocks );
 
-		// If requesting more blocks than available, display all of them.
+		// Display all blocks when the requested count meets or exceeds the total.
 		if ( $number_of_items >= $total_blocks ) {
 			$random_blocks = $inner_blocks;
 		} else {
-			// Pick N random blocks.
+			// Select the requested number of blocks.
 			$random_keys = (array) array_rand( $inner_blocks, $number_of_items );
 
 			foreach ( $random_keys as $key ) {
@@ -76,16 +71,14 @@ if ( ! empty( $block->inner_blocks ) ) {
 			}
 		}
 
-		// Shuffle the selected blocks if shuffle is enabled and more than 1 block is displayed.
 		$shuffle = isset( $attributes['shuffle'] ) && (bool) $attributes['shuffle'];
 
 		if ( $shuffle && $number_of_items > 1 && count( $random_blocks ) > 1 ) {
 			shuffle( $random_blocks );
 		}
 
-		// Save to the session cookie only if the option is enabled.
 		if ( $prevent_repeats ) {
-			// Generate a unique block instance ID.
+			// Hash each selected block for lookup on the next request.
 			$ids = array_map(
 				static function ( $inner_block ) {
 					return md5( wp_json_encode( $inner_block->parsed_block ) );
@@ -93,16 +86,16 @@ if ( ! empty( $block->inner_blocks ) ) {
 				$random_blocks
 			);
 
-			// After 100 blocks we are approaching cookie size limits.
+			// Limit each cookie to 100 hashes.
 			if ( ! empty( $ids ) && count( $ids ) <= 100 ) {
 				setcookie(
 					$session_cookie_name,
 					implode( ',', $ids ),
 					[
-						// Omit 'expires' to use a session cookie (setcookie() defaults to expires=0).
+						// Omitting expires creates a session cookie.
 						'path'     => defined( 'COOKIEPATH' ) ? COOKIEPATH : '/',
 						'secure'   => is_ssl(),
-						'httponly' => true, // Don't allow JavaScript access.
+						'httponly' => true, // Prevent JavaScript access.
 						'samesite' => 'Lax',
 					]
 				);
@@ -110,25 +103,22 @@ if ( ! empty( $block->inner_blocks ) ) {
 		}
 
 	} else {
-		/*
-		 * Get the random blocks out of the session IDs - preserve the original (shuffled) order.
-		 */
+		// Restore the saved selection in its original order.
 		foreach ( $stored_block_ids as $session_block_id ) {
 			foreach ( $inner_blocks as $inner_block ) {
 				$block_id = md5( wp_json_encode( $inner_block->parsed_block ) );
 
 				if ( $block_id === $session_block_id ) {
 					$random_blocks[] = $inner_block;
-					break; // Found the block, move to the next session_block_id.
+					break; // Continue with the next stored ID.
 				}
 			}
 		}
 	}
 
-	// Render each selected block.
 	foreach ( $random_blocks as $random_block ) {
-		/* @var $random_block WP_Block */
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		/** @var WP_Block $random_block */
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Each block escapes its own rendered output.
 		echo $random_block->render();
 	}
 }

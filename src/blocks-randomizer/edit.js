@@ -17,8 +17,7 @@ import { getBlockTypes } from '@wordpress/blocks';
 import './editor.scss';
 
 /**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
+ * Renders the block controls and nested content in the editor.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
@@ -31,11 +30,9 @@ import './editor.scss';
 export default function Edit( { attributes, setAttributes } ) {
 	const { numberOfItems, shuffle, preventRepeatsUsingSession } = attributes;
 
-	const blockProps = useBlockProps( {
-		// className: 'wp-block-blocks-randomizer-holder-parent'
-	} );
+	const blockProps = useBlockProps();
 
-	// Allow all blocks except self-referencing to be added as inner blocks.
+	// Exclude this block to prevent direct self-nesting.
 	const allowedBlocks = useMemo( () => {
 		return getBlockTypes()
 			.map( ( block ) => block.name )
@@ -44,7 +41,6 @@ export default function Edit( { attributes, setAttributes } ) {
 			);
 	}, [] );
 
-	// @see https://github.com/WordPress/gutenberg/tree/trunk/packages/block-editor/src/components/inner-blocks
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			...blockProps,
@@ -65,8 +61,6 @@ export default function Edit( { attributes, setAttributes } ) {
 			templateLock: false,
 		}
 	);
-
-	// innerBlocksProps.className = innerBlocksProps.className.replace( 'wp-block-blocks-randomizer-holder-parent', 'wp-block-blocks-randomizer-holder-inner' );
 
 	return (
 		<>
@@ -131,9 +125,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 					/>
 
-					<ExternalLink
-						href="https://github.com/slaFFik/blocks-randomizer/issues"
-					>
+					<ExternalLink href="https://github.com/slaFFik/blocks-randomizer/issues">
 						{ __(
 							'Suggest Ideas or Report Issues',
 							'blocks-randomizer'
