@@ -1,4 +1,4 @@
-import { registerBlockType } from '@wordpress/blocks';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 
 // Include styles shared by the editor and front end.
@@ -9,7 +9,10 @@ import { ReactComponent as Icon } from './icon.svg';
 import metadata from './block.json';
 import Save from './save';
 
-registerBlockType( metadata.name, {
+const BLOCK_NAME = metadata.name;
+const GROUP_BLOCK_NAME = 'core/group';
+
+registerBlockType( BLOCK_NAME, {
 	icon: <Icon />,
 	keywords: [
 		__( 'content', 'blocks-randomizer' ),
@@ -47,6 +50,33 @@ registerBlockType( metadata.name, {
 					level: 2,
 					content: __( '… or any text blocks', 'blocks-randomizer' ),
 				},
+			},
+		],
+	},
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ GROUP_BLOCK_NAME ],
+				isMatch: ( attributes, block ) =>
+					block.innerBlocks.length >= 2 &&
+					! block.innerBlocks.some(
+						( innerBlock ) => innerBlock.name === BLOCK_NAME
+					),
+				transform: ( attributes, innerBlocks ) =>
+					createBlock(
+						BLOCK_NAME,
+						{ numberOfItems: 1 },
+						innerBlocks
+					),
+			},
+		],
+		to: [
+			{
+				type: 'block',
+				blocks: [ GROUP_BLOCK_NAME ],
+				transform: ( attributes, innerBlocks ) =>
+					createBlock( GROUP_BLOCK_NAME, {}, innerBlocks ),
 			},
 		],
 	},

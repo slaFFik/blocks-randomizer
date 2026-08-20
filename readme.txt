@@ -341,6 +341,7 @@ The Blocks Randomizer is a native WordPress block designed for the Block Editor 
 
 = 1.5.0 =
 * Added: The plugin now has its own icon in the Block or Site Editors, so it's easier to recognize the renamed block in the List View.
+* Added: Convert Group blocks with two or more child blocks to a Blocks Randomizer, or convert a Blocks Randomizer back to a Group, without losing the child blocks.
 * Changed: The minimum supported WordPress version is now 6.8.
 * Changed: Confirmed compatibility with WordPress 7.1.
 
