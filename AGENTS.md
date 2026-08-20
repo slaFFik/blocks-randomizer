@@ -9,7 +9,7 @@ Keep non-code replies concise, even at the expense of perfect grammar.
 - This is a small WordPress block plugin with one block: `blocks-randomizer/holder`.
 - Inspect `git status` before editing and preserve unrelated work.
 - Edit source files under `src/`; never hand-edit generated `build/` files.
-- Activate Node.js 24 from `.nvmrc`, then verify with `node --version` before running npm commands.
+- Activate Node.js 24 from `.nvmrc` (use `nvm use`), then verify with `node --version` before running npm commands.
 - Install dependencies with `npm ci` only when `node_modules` is absent or `package-lock.json` changed. `.npmrc` rejects packages published less than seven days ago.
 - Run checks that match the changed files. There is no automated test suite, so behavior changes require manual WordPress testing.
 
@@ -112,8 +112,6 @@ Do not bump versions unless requested. When preparing a release, keep these sync
 - `version` in `package.json` and the root package entry in `package-lock.json`
 - `version` in `src/blocks-randomizer/block.json`
 - `Stable tag`, compatibility headers, and changelog in `readme.txt`
-
-The `1.5.0` changelog section is currently an unreleased section while runtime/package metadata remains `1.4.0`; do not infer that a release bump is authorized.
 
 ## Repository Safety
 
